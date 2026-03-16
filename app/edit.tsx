@@ -1,4 +1,3 @@
-// app/edit.tsx
 import React, { useState, useEffect } from "react";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import {
@@ -23,12 +22,11 @@ export default function EditTaskScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState(""); // збережемо як рядок для простоти
+  const [dueDate, setDueDate] = useState("");
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
-  // Завантаження існуючого завдання
   useEffect(() => {
     if (id) {
       getDoc(doc(db, "tasks", id)).then((snap) => {

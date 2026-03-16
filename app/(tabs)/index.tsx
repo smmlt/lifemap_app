@@ -29,7 +29,7 @@ export default function TasksScreen() {
   const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [sortBy, setSortBy] = useState<"dueDate" | "title">("dueDate");
-  const [searchText, setSearchText] = useState(""); // новий стан пошуку
+  const [searchText, setSearchText] = useState("");
   const [filterCompleted, setFilterCompleted] = useState<"all" | "done" | "notdone">("all");
   const router = useRouter();
 

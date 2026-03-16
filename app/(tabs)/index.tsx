@@ -25,6 +25,21 @@ import { onAuthStateChanged } from "firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter, Stack } from "expo-router";
 
+// Кольори для категорій
+const CATEGORY_COLORS: Record<string, string> = {
+  Work: "#fbbc04",
+  Personal: "#34a853",
+  Study: "#aabbff",
+  Other: "#f28b82",
+};
+
+// Кольори для пріоритету
+const PRIORITY_COLORS: Record<string, string> = {
+  high: "#e53935",
+  medium: "#ffb300",
+  low: "#43a047",
+};
+
 export default function TasksScreen() {
   const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -91,7 +106,6 @@ export default function TasksScreen() {
     return unsubscribe;
   }, []);
 
-  // Перезапит при зміні сортування, пошуку або фільтру
   useEffect(() => {
     fetchTasks();
   }, [sortBy, searchText, filterCompleted]);
@@ -153,7 +167,6 @@ export default function TasksScreen() {
         }}
       />
 
-      {/* Пошук */}
       <TextInput
         placeholder="Пошук за назвою..."
         style={styles.searchInput}
@@ -161,7 +174,6 @@ export default function TasksScreen() {
         onChangeText={setSearchText}
       />
 
-      {/* Фільтр по completed */}
       <View style={styles.filterContainer}>
         <TouchableOpacity
           style={styles.filterButton}
@@ -189,7 +201,6 @@ export default function TasksScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Сортування */}
       <View style={styles.sortContainer}>
         <TouchableOpacity onPress={() => setSortBy("dueDate")}>
           <Text style={[styles.sortButton, { color: sortBy === "dueDate" ? "#2196f3" : "#666" }]}>
@@ -220,6 +231,37 @@ export default function TasksScreen() {
                   {item.dueDate.toDate ? item.dueDate.toDate().toLocaleString() : ""}
                 </Text>
               ) : null}
+
+              {/* Категорія та пріоритет */}
+              <View style={{ flexDirection: "row", marginTop: 5 }}>
+                {item.category ? (
+                  <View
+                    style={{
+                      backgroundColor: CATEGORY_COLORS[item.category] || "#ccc",
+                      paddingHorizontal: 8,
+                      paddingVertical: 2,
+                      borderRadius: 5,
+                      marginRight: 5,
+                    }}
+                  >
+                    <Text style={{ color: "#fff", fontSize: 12 }}>{item.category}</Text>
+                  </View>
+                ) : null}
+                {item.priority ? (
+                  <View
+                    style={{
+                      backgroundColor: PRIORITY_COLORS[item.priority.toLowerCase()] || "#ccc",
+                      paddingHorizontal: 8,
+                      paddingVertical: 2,
+                      borderRadius: 5,
+                    }}
+                  >
+                    <Text style={{ color: "#fff", fontSize: 12, textTransform: "capitalize" }}>
+                      {item.priority}
+                    </Text>
+                  </View>
+                ) : null}
+              </View>
             </TouchableOpacity>
 
             <TouchableOpacity

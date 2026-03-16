@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import {
   collection,
   addDoc,
@@ -23,6 +24,8 @@ export default function EditTaskScreen() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const [priority, setPriority] = useState("Low");
+  const [category, setCategory] = useState("Personal");
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -37,6 +40,8 @@ export default function EditTaskScreen() {
           setDueDate(
             data.dueDate?.toDate ? data.dueDate.toDate().toISOString().slice(0, 16) : ""
           );
+          setPriority(data.priority || "Low");
+          setCategory(data.category || "Personal");
         }
       });
     }
@@ -54,6 +59,8 @@ export default function EditTaskScreen() {
         title,
         description,
         dueDate: dueDate ? new Date(dueDate) : null,
+        priority,
+        category,
         updatedAt: serverTimestamp(),
       };
 
@@ -97,6 +104,15 @@ export default function EditTaskScreen() {
       fontSize: 18,
       backgroundColor: "#fff",
     },
+    pickerInner: {
+      height: 50,
+      borderRadius: 10,
+      color: "#000",
+      backgroundColor: "#fff",
+      paddingHorizontal: 10,
+      width: '100%',
+      marginBottom: 20,
+    },
     Button: {
       backgroundColor: "#2196f3",
       padding: 15,
@@ -132,6 +148,33 @@ export default function EditTaskScreen() {
         value={dueDate}
         onChangeText={setDueDate}
       />
+
+      <Text style={styles.label}>Пріоритет</Text>
+      <Picker
+        selectedValue={priority}
+        onValueChange={setPriority}
+        style={styles.pickerInner}
+        dropdownIconColor="#2196f3"
+        mode="dropdown"
+      >
+        <Picker.Item label="High" value="high" />
+        <Picker.Item label="Medium" value="medium" />
+        <Picker.Item label="Low" value="low" />
+      </Picker>
+
+      <Text style={styles.label}>Категорія</Text>
+      <Picker
+        selectedValue={category}
+        onValueChange={setCategory}
+        style={styles.pickerInner}
+        dropdownIconColor="#2196f3"
+        mode="dropdown"
+      >
+        <Picker.Item label="Work" value="Work" />
+        <Picker.Item label="Personal" value="Personal" />
+        <Picker.Item label="Study" value="Study" />
+        <Picker.Item label="Other" value="Other" />
+      </Picker>
 
       <TouchableOpacity style={styles.Button} onPress={save} disabled={loading}>
         {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.ButtonText}>Зберегти</Text>}

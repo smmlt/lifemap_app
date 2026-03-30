@@ -3,12 +3,12 @@ import { initializeAuth } from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
 
 const firebaseConfig = {
-  apiKey: "AIzaSyASHPauS8H8u5fM8lXndr2V0GeNtpwD_ss",
-  authDomain: "lifemap-app-dc946.firebaseapp.com",
-  projectId: "lifemap-app-dc946",
-  storageBucket: "lifemap-app-dc946.firebasestorage.app",
-  messagingSenderId: "848136974000",
-  appId: "1:848136974000:web:c74b3e412a19624e3a1575"
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
